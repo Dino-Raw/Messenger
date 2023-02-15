@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<variable
+			name="viewModel"
+			type="com.example.messenger.presentation.viewmodel.SignInViewModel" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".presentation.fragment.SignInFragment">
+
+		<EditText
+			android:id="@+id/email_txt"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="250dp"
+			android:layout_marginHorizontal="50dp"
+			android:hint="@string/email"
+			android:inputType="textEmailAddress"
+			android:text="@={viewModel.email}"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
+		</EditText>
+
+		<EditText
+			android:id="@+id/password_txt"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginHorizontal="50dp"
+			android:hint="@string/password"
+			android:inputType="textPassword"
+			android:text="@={viewModel.password}"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/email_txt">
+		</EditText>
+
+		<TextView
+			android:id="@+id/forgotPassword"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/forgot_password"
+			android:textColor="@color/teal_200"
+			app:layout_constraintEnd_toEndOf="@id/password_txt"
+			app:layout_constraintTop_toBottomOf="@id/password_txt">
+		</TextView>
+
+		<Button
+			android:id="@+id/sign_in_btn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginHorizontal="50dp"
+			android:layout_marginTop="10dp"
+			android:text="@string/sign_in"
+			android:onClick="@{_ -> viewModel.signIn()}"
+			android:enabled="@{viewModel.isEnabledSignIn}"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/forgotPassword">
+		</Button>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:orientation="horizontal"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/sign_in_btn">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/don_t_have_an_account">
+			</TextView>
+
+			<TextView
+				android:layout_marginStart="2dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/sign_up"
+				android:onClick="@{_ -> viewModel.navigateToSignUp()}"
+				android:textColor="@color/teal_200">
+			</TextView>
+		</LinearLayout>
+
+		<ProgressBar
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:visibility="@{viewModel.isVisiblyProgressBar}"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent">
+		</ProgressBar>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

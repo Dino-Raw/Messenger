@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "380500283941",
+    "firebase_url": "https://messenger-alefurrybumblebee-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "messenger-alefurrybumblebee",
+    "storage_bucket": "messenger-alefurrybumblebee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380500283941:android:d1630903410d165f8be5cc",
+        "android_client_info": {
+          "package_name": "com.example.data"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380500283941-rsdg349imq115oaqgvqs5tpov20irve3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCyt1K6VR06c602YSTGvi-BsycmY20KT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380500283941-rsdg349imq115oaqgvqs5tpov20irve3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

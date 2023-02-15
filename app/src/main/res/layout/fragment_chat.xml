@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+	<data>
+		<variable
+			name="viewModel"
+			type="com.example.messenger.presentation.viewmodel.ChatViewModel" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context="com.example.messenger.presentation.fragment.ChatFragment">
+
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/chat_toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<ImageButton
+					android:id="@+id/chat_back_btn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:layout_alignParentStart="true"
+					android:background="@drawable/ic_back_24">
+				</ImageButton>
+
+				<LinearLayout
+					android:id="@+id/user_data_layout"
+					android:layout_toEndOf="@id/chat_back_btn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="20dp"
+					android:orientation="vertical">
+
+					<TextView
+						android:id="@+id/user_name_text"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Nick Name">
+					</TextView>
+
+					<TextView
+						android:id="@+id/user_status_text"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Status">
+					</TextView>
+
+				</LinearLayout>
+
+			</RelativeLayout>
+
+		</androidx.appcompat.widget.Toolbar>
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/messages_recyclerview"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:orientation="vertical"
+			app:layout_constraintTop_toBottomOf="@id/chat_toolbar"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toTopOf="@id/input_message_layout">
+		</androidx.recyclerview.widget.RecyclerView>
+
+		<RelativeLayout
+			android:id="@+id/input_message_layout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toBottomOf="@id/messages_recyclerview"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent">
+			
+			<ImageButton
+				android:id="@+id/send_massage_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@drawable/ic_send_24"
+				android:padding="5dp"
+				android:layout_centerVertical="true"
+				android:layout_alignParentEnd="true">
+			</ImageButton>
+			
+			<EditText
+				android:id="@+id/input_message_edit_text"
+				android:layout_width="0dp"
+				android:layout_height="40dp"
+				android:paddingHorizontal="10dp"
+				android:hint="Message"
+				android:inputType="textCapSentences|textMultiLine"
+				android:background="@null"
+				android:layout_alignParentStart="true"
+				android:layout_toStartOf="@id/send_massage_btn"
+				android:textColor="@color/white" />
+
+		</RelativeLayout>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
