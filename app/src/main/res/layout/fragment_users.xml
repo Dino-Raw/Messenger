@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<variable
+			name="viewModel"
+			type="com.example.messenger.presentation.viewmodel.UsersViewModel" />
+	</data>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".presentation.fragment.UsersFragment">
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/list_pinned_note"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="10dp"
+			android:orientation="vertical"
+			android:nestedScrollingEnabled="false"
+			app:setAdapter="@{viewModel.userListAdapter}"
+			app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager">
+		</androidx.recyclerview.widget.RecyclerView>
+
+	</FrameLayout>
+</layout>

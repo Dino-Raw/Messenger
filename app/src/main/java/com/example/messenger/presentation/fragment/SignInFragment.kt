@@ -59,8 +59,6 @@ class SignInFragment: Fragment() {
                 }
                 else -> {}
             }
-
-
         }
 
         viewModel.message.observe(viewLifecycleOwner) { message ->

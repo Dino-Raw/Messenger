@@ -3,17 +3,21 @@ package com.example.messenger.presentation.viewmodel
 import android.view.View
 import androidx.lifecycle.*
 import com.example.domain.model.Response
+import com.example.domain.model.CurrentUser
 import com.example.domain.model.UserAuth
+import com.example.domain.usecase.InsertNewUserUseCase
 import com.example.domain.usecase.SignUpUseCase
-import com.example.messenger.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
+    private val insertNewUserUseCase: InsertNewUserUseCase,
+    private val userAuth: UserAuth,
+    private val currentUser: CurrentUser,
 ): ViewModel() {
-    val email: MutableLiveData<String> = MutableLiveData("")
+    var email: MutableLiveData<String> = MutableLiveData("")
     val password: MutableLiveData<String> = MutableLiveData("")
     val confirmPassword: MutableLiveData<String> = MutableLiveData("")
 
@@ -38,24 +42,45 @@ class SignUpViewModel @Inject constructor(
 
     fun signUp() {
         viewModelScope.launch(Dispatchers.IO) {
-            signUpUseCase.execute(UserAuth(email.value!!, password.value!!)).collect { response ->
-                parseSignUpResponse(response)
+            signUpUseCase.execute(userAuth.also {
+                it.email = email.value
+                it.password = password.value
+            }).collect { response ->
+                when (response) {
+                    is Response.Loading ->
+                        _isVisiblyProgressBar.postValue(View.VISIBLE)
+                    is Response.Fail -> {
+                        _isVisiblyProgressBar.postValue(View.GONE)
+                        if (response.e.message?.isNotBlank() == true)
+                            _message.postValue(response.e.message)
+                    }
+                    is Response.Success -> {
+                        insertNewUser()
+                    }
+                }
             }
         }
     }
 
-    private fun parseSignUpResponse(response: Response<Boolean>) {
-        when (response) {
-            is Response.Loading ->
-                _isVisiblyProgressBar.postValue(View.VISIBLE)
-            is Response.Fail -> {
-                _isVisiblyProgressBar.postValue(View.GONE)
-                if (response.e.message?.isNotBlank() == true)
-                    _message.postValue(response.e.message)
-            }
-            is Response.Success -> {
-                _isVisiblyProgressBar.postValue(View.GONE)
-                navigateToHome()
+    private fun insertNewUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            insertNewUserUseCase.execute(currentUser.also {
+                it.email = email.value
+                it.name = email.value?.substringBefore("@")
+            }).collect { response ->
+                when (response) {
+                    is Response.Loading ->
+                        _isVisiblyProgressBar.postValue(View.VISIBLE)
+                    is Response.Fail -> {
+                        _isVisiblyProgressBar.postValue(View.GONE)
+                        if (response.e.message?.isNotBlank() == true)
+                            _message.postValue(response.e.message)
+                    }
+                    is Response.Success -> {
+                        _isVisiblyProgressBar.postValue(View.GONE)
+                        navigateToHome()
+                    }
+                }
             }
         }
     }

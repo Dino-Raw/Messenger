@@ -2,10 +2,7 @@ package com.example.messenger.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.messenger.presentation.viewmodel.ChatViewModel
-import com.example.messenger.presentation.viewmodel.HomeViewModel
-import com.example.messenger.presentation.viewmodel.SignInViewModel
-import com.example.messenger.presentation.viewmodel.SignUpViewModel
+import com.example.messenger.presentation.viewmodel.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -14,6 +11,11 @@ import dagger.multibindings.IntoMap
 interface ViewModelModule {
     @Binds
     fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -34,4 +36,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(ChatViewModel::class)
     fun bindChatViewModel(viewModel: ChatViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UsersViewModel::class)
+    fun bindFriendsViewModel(viewModel: UsersViewModel): ViewModel
 }

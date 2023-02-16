@@ -1,9 +1,7 @@
 package com.example.messenger.di
 
-import com.example.messenger.presentation.fragment.ChatFragment
-import com.example.messenger.presentation.fragment.HomeFragment
-import com.example.messenger.presentation.fragment.SignInFragment
-import com.example.messenger.presentation.fragment.SignUpFragment
+import com.example.messenger.presentation.activity.MainActivity
+import com.example.messenger.presentation.fragment.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,4 +12,6 @@ interface AppComponent {
     fun inject(fragment: SignInFragment)
     fun inject(fragment: HomeFragment)
     fun inject(fragment: ChatFragment)
+    fun inject(fragment: UsersFragment)
+    fun inject(activity: MainActivity)
 }

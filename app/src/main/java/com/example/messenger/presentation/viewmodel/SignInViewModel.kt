@@ -35,21 +35,9 @@ class SignInViewModel @Inject constructor(
         mediator.addSource(password) { mediator.postValue(getIsEnabledSignUpValue.invoke()) }
     }
 
-    init {
-        checkSignIn()
-    }
-
     fun signIn() {
         viewModelScope.launch(Dispatchers.IO) {
             signInUseCase.execute(UserAuth(email.value!!, password.value!!)).collect { response ->
-                parseSignInResponse(response)
-            }
-        }
-    }
-
-    private fun checkSignIn() {
-        viewModelScope.launch(Dispatchers.IO) {
-            checkSignInUseCase.execute().collect { response ->
                 parseSignInResponse(response)
             }
         }

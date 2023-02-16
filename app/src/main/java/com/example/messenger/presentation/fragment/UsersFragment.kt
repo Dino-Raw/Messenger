@@ -4,27 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.example.messenger.R
 import com.example.messenger.app.App
-import com.example.messenger.databinding.FragmentHomeBinding
+import com.example.messenger.databinding.FragmentUsersBinding
 import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
-import com.example.messenger.presentation.viewmodel.HomeViewModel
+import com.example.messenger.presentation.viewmodel.UsersViewModel
 import javax.inject.Inject
 
-class HomeFragment: Fragment() {
+class UsersFragment : Fragment() {
     @Inject lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var viewModel: HomeViewModel
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var viewModel: UsersViewModel
+    private var _binding: FragmentUsersBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ((activity as MessengerActivity).applicationContext as App).appComponent.inject(this)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[HomeViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[UsersViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -32,7 +31,7 @@ class HomeFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater)
+        _binding = FragmentUsersBinding.inflate(inflater)
         return binding.root
     }
 
@@ -44,13 +43,14 @@ class HomeFragment: Fragment() {
     }
 
     private fun observers() {
-        viewModel.navigationAction.observe(viewLifecycleOwner) { navigationAction ->
-            when (navigationAction) {
-                "UsersFragment" -> {
-                    findNavController().navigate(R.id.action_fragment_home_to_fragment_users)
-                    viewModel.navigationActionClear()
-                }
-                else -> {}
+        viewModel.userList.observe(viewLifecycleOwner) { userList ->
+            viewModel.setUserListAdapter()
+        }
+
+        viewModel.message.observe(viewLifecycleOwner) { message ->
+            if (message != "") {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                viewModel.messageClear()
             }
         }
     }

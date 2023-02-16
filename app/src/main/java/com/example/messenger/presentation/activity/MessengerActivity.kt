@@ -15,7 +15,6 @@ class MessengerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("HOME ACTIVITY")
         _binding = ActivityMessengerBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         setContentView(binding.root)

@@ -16,6 +16,9 @@
 		<action
 			android:id="@+id/action_fragment_home_to_fragment_current_user_profile"
 			app:destination="@id/fragment_current_user_profile" />
+		<action
+			android:id="@+id/action_fragment_home_to_fragment_users"
+			app:destination="@id/fragment_users" />
 	</fragment>
 	<fragment
 		android:id="@+id/fragment_chat"
@@ -34,4 +37,12 @@
 		android:id="@+id/fragment_current_user_profile"
 		android:name="com.example.messenger.presentation.fragment.CurrentUserProfileFragment"
 		tools:layout="@layout/fragment_current_user_profile"/>
+	<fragment
+		android:id="@+id/fragment_users"
+		android:name="com.example.messenger.presentation.fragment.UsersFragment"
+		tools:layout="@layout/fragment_users">
+		<action
+			android:id="@+id/action_fragment_users_to_fragment_profile2"
+			app:destination="@id/fragment_profile" />
+	</fragment>
 </navigation>

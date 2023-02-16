@@ -1,13 +1,23 @@
 package com.example.messenger.di
 
+import com.example.domain.model.CurrentUser
+import com.example.domain.model.UserAuth
 import com.example.domain.repository.remote.AuthRepository
+import com.example.domain.repository.remote.CurrentUserRepository
 import com.example.domain.repository.remote.UserImagesRepository
+import com.example.domain.repository.remote.UserRepository
 import com.example.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 
 @Module
 class DomainModule {
+    @Provides
+    fun provideUserAuth() = UserAuth()
+
+    @Provides
+    fun provideUser() = CurrentUser()
+
     @Provides
     fun provideSignUpUseCase(repository: AuthRepository) =
         SignUpUseCase(repository = repository)
@@ -31,4 +41,12 @@ class DomainModule {
     @Provides
     fun provideUserImageDeleteUseCase(repository: UserImagesRepository) =
         UserImageDeleteUseCase(repository = repository)
+
+    @Provides
+    fun provideInsertNewUserUseCase(repository: CurrentUserRepository) =
+        InsertNewUserUseCase(repository = repository)
+
+    @Provides
+    fun provideGetUserList(repository: UserRepository) =
+        GetUserListUseCase(repository = repository)
 }

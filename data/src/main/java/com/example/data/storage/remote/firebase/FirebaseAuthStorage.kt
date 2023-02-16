@@ -19,14 +19,17 @@ class FirebaseAuthStorage @Inject constructor(
     override suspend fun signUp(userAuth: UserAuth): Flow<Response<Boolean>> = callbackFlow {
         trySend(Response.Loading())
 
-        firebaseAuth.createUserWithEmailAndPassword (
-            userAuth.email,
-            userAuth.password,
-        ).addOnSuccessListener {
-            trySend(Response.Success(data = true))
-        }.addOnFailureListener { e ->
-            trySend(Response.Fail(e = e))
-        }
+        if (userAuth.email?.isNotBlank() == true && userAuth.password?.isNotBlank() == true)
+            firebaseAuth.createUserWithEmailAndPassword (
+                userAuth.email!!,
+                userAuth.password!!,
+            ).addOnSuccessListener {
+                trySend(Response.Success(data = true))
+            }.addOnFailureListener { e ->
+                trySend(Response.Fail(e = e))
+            }
+        else
+            trySend(Response.Fail(e = Exception("Data entry fields are empty")))
 
         awaitClose { this.cancel() }
     }
@@ -34,14 +37,17 @@ class FirebaseAuthStorage @Inject constructor(
     override suspend fun signIn(userAuth: UserAuth): Flow<Response<Boolean>> = callbackFlow {
         trySend(Response.Loading())
 
-        firebaseAuth.signInWithEmailAndPassword(
-            userAuth.email,
-            userAuth.password
-        ).addOnSuccessListener {
-            trySend(Response.Success(data = true))
-        }.addOnFailureListener { e ->
-            trySend(Response.Fail(e = e))
-        }
+        if (userAuth.email?.isNotBlank() == true && userAuth.password?.isNotBlank() == true)
+            firebaseAuth.signInWithEmailAndPassword(
+                userAuth.email!!,
+                userAuth.password!!
+            ).addOnSuccessListener {
+                trySend(Response.Success(data = true))
+            }.addOnFailureListener { e ->
+                trySend(Response.Fail(e = e))
+            }
+        else
+            trySend(Response.Fail(e = Exception("Data entry fields are empty")))
 
         awaitClose { this.cancel() }
     }
