@@ -46,14 +46,16 @@
 						android:id="@+id/user_name_text"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="Nick Name">
+						android:hint="Nick Name"
+						android:text="@{viewModel.toUser.name}">
 					</TextView>
 
 					<TextView
 						android:id="@+id/user_status_text"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="Status">
+						android:hint="Status"
+						android:text="@{viewModel.toUser.timeStatus}">
 					</TextView>
 
 				</LinearLayout>
@@ -83,26 +85,28 @@
 			app:layout_constraintBottom_toBottomOf="parent">
 			
 			<ImageButton
-				android:id="@+id/send_massage_btn"
+				android:id="@+id/send_message_btn"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:background="@drawable/ic_send_24"
-				android:padding="5dp"
+				android:padding="15dp"
 				android:layout_centerVertical="true"
-				android:layout_alignParentEnd="true">
+				android:layout_alignParentEnd="true"
+				android:onClick="@{() -> viewModel.sendMessage()}">
 			</ImageButton>
 			
 			<EditText
 				android:id="@+id/input_message_edit_text"
 				android:layout_width="0dp"
-				android:layout_height="40dp"
-				android:paddingHorizontal="10dp"
+				android:layout_height="50dp"
+				android:paddingHorizontal="30dp"
 				android:hint="Message"
+				android:text="@={viewModel.messageBody}"
 				android:inputType="textCapSentences|textMultiLine"
 				android:background="@null"
 				android:layout_alignParentStart="true"
-				android:layout_toStartOf="@id/send_massage_btn"
-				android:textColor="@color/white" />
+				android:layout_toStartOf="@id/send_message_btn"
+				android:textColor="@color/black" />
 
 		</RelativeLayout>
 

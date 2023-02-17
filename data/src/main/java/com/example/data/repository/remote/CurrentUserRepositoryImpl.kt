@@ -21,4 +21,7 @@ class CurrentUserRepositoryImpl @Inject constructor(
 
     override suspend fun getUser(): Flow<Response<CurrentUser>> =
         currentUserStorage.getUser()
+
+    override suspend fun getUserId(): Flow<Response<String>> =
+        currentUserStorage.getUserId()
 }

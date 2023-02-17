@@ -41,4 +41,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(UsersViewModel::class)
     fun bindFriendsViewModel(viewModel: UsersViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
 }

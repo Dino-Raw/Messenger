@@ -16,6 +16,9 @@ class UsersViewModel @Inject constructor(
     private val getUserListUseCase: GetUserListUseCase,
     val userListAdapter: UserListAdapter,
 ): ViewModel() {
+    private var _navigationAction: MutableLiveData<String> = MutableLiveData("")
+    val navigationAction: LiveData<String> = _navigationAction
+
     private val _userList: MutableLiveData<ArrayList<User>?> = MutableLiveData()
     val userList: LiveData<ArrayList<User>?> = _userList
 
@@ -27,7 +30,6 @@ class UsersViewModel @Inject constructor(
     }
 
     fun setUserListAdapter() {
-        println(_userList.value)
         userListAdapter.userList = _userList.value ?: ArrayList<User>()
     }
 
@@ -50,5 +52,13 @@ class UsersViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun navigateBack() {
+        _navigationAction.value = "Back"
+    }
+
+    fun navigationActionClear() {
+        _navigationAction.value = ""
     }
 }

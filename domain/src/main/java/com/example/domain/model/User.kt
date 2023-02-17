@@ -6,4 +6,4 @@ data class User (
     var timeStatus: String? = null,
     var imagePath: String? = null,
     var id: String? = null,
-)
+): java.io.Serializable

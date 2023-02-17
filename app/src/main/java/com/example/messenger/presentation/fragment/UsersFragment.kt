@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.messenger.R
 import com.example.messenger.app.App
 import com.example.messenger.databinding.FragmentUsersBinding
 import com.example.messenger.di.ViewModelFactory
@@ -53,5 +55,15 @@ class UsersFragment : Fragment() {
                 viewModel.messageClear()
             }
         }
+
+        viewModel.navigationAction.observe(viewLifecycleOwner) { navigationAction ->
+            when (navigationAction) {
+                "Back" -> {
+                    findNavController().popBackStack()
+                    viewModel.navigationActionClear()
+                }
+            }
+        }
+
     }
 }

@@ -26,12 +26,20 @@
 		tools:layout="@layout/fragment_chat">
 		<action
 			android:id="@+id/action_fragment_chat_to_fragment_profile"
-			app:destination="@id/fragment_profile" />
+			app:destination="@id/fragment_profile"
+			app:popUpTo="@id/fragment_profile"
+			app:popUpToInclusive="true" />
 	</fragment>
 	<fragment
 		android:id="@+id/fragment_profile"
 		android:name="com.example.messenger.presentation.fragment.ProfileFragment"
-		tools:layout="@layout/fragment_profile"/>
+		tools:layout="@layout/fragment_profile">
+		<action
+			android:id="@+id/action_fragment_profile_to_fragment_chat"
+			app:destination="@id/fragment_chat"
+			app:popUpTo="@id/fragment_chat"
+			app:popUpToInclusive="true" />
+	</fragment>
 
 	<fragment
 		android:id="@+id/fragment_current_user_profile"
@@ -42,7 +50,7 @@
 		android:name="com.example.messenger.presentation.fragment.UsersFragment"
 		tools:layout="@layout/fragment_users">
 		<action
-			android:id="@+id/action_fragment_users_to_fragment_profile2"
+			android:id="@+id/action_fragment_users_to_fragment_profile"
 			app:destination="@id/fragment_profile" />
 	</fragment>
 </navigation>

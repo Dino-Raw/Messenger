@@ -9,6 +9,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import java.lang.Exception
 import javax.inject.Inject
 
 class FirebaseCurrentUserStorage @Inject constructor(
@@ -39,5 +41,18 @@ class FirebaseCurrentUserStorage @Inject constructor(
 
     override suspend fun getUser(): Flow<Response<CurrentUser>> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserId(): Flow<Response<String>> = callbackFlow {
+        trySend(Response.Loading())
+
+        firebaseAuth.currentUser?.uid.also { id ->
+            if (id != null && id.isNotBlank())
+                trySend(Response.Success(data = id.toString()))
+            else
+                trySend(Response.Fail(e = Exception("Id is empty")))
+        }
+
+        awaitClose { this.cancel() }
     }
 }

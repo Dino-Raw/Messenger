@@ -13,5 +13,6 @@ interface AppComponent {
     fun inject(fragment: HomeFragment)
     fun inject(fragment: ChatFragment)
     fun inject(fragment: UsersFragment)
+    fun inject(fragment: ProfileFragment)
     fun inject(activity: MainActivity)
 }

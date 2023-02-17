@@ -2,10 +2,7 @@ package com.example.messenger.di
 
 import com.example.domain.model.CurrentUser
 import com.example.domain.model.UserAuth
-import com.example.domain.repository.remote.AuthRepository
-import com.example.domain.repository.remote.CurrentUserRepository
-import com.example.domain.repository.remote.UserImagesRepository
-import com.example.domain.repository.remote.UserRepository
+import com.example.domain.repository.remote.*
 import com.example.domain.usecase.*
 import dagger.Module
 import dagger.Provides
@@ -13,10 +10,12 @@ import dagger.Provides
 @Module
 class DomainModule {
     @Provides
-    fun provideUserAuth() = UserAuth()
+    fun provideUserAuth() =
+        UserAuth()
 
     @Provides
-    fun provideUser() = CurrentUser()
+    fun provideUser() =
+        CurrentUser()
 
     @Provides
     fun provideSignUpUseCase(repository: AuthRepository) =
@@ -47,6 +46,23 @@ class DomainModule {
         InsertNewUserUseCase(repository = repository)
 
     @Provides
+    fun provideGetCurrentUserIdUseCase(repository: CurrentUserRepository) =
+        GetCurrentUserIdUseCase(repository = repository)
+
+    @Provides
     fun provideGetUserList(repository: UserRepository) =
         GetUserListUseCase(repository = repository)
+
+    @Provides
+    fun provideInsertMessageUseCase(repository: ChatRepository) =
+        InsertMessageUseCase(repository = repository)
+
+
+
+
+
+
+    @Provides
+    fun provideGetRandomStringUseCase() =
+        GetRandomStringUseCase()
 }

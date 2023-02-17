@@ -48,9 +48,9 @@ class FirebaseUserStorage @Inject constructor(
                 val userArray: ArrayList<User> = ArrayList()
 
                 snapshot.children.forEach { userSnapshot ->
-                    val currentUser = userSnapshot.getValue(CurrentUser::class.java)
-                    println(currentUser?.name)
-                    if (currentUser != null && currentUser.id != firebaseAuth.currentUser?.uid)
+                    val currentUser: CurrentUser = userSnapshot.getValue(CurrentUser::class.java) as CurrentUser
+
+                    if (currentUser.id != firebaseAuth.currentUser?.uid)
                         userArray.add(currentUser.toUser())
                 }
 
