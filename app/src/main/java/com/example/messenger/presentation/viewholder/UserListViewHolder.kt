@@ -18,5 +18,7 @@ class UserListViewHolder(private val binding: RowUserBinding): RecyclerView.View
                 bundleOf("user" to user)
             )
         }
+
+        binding.executePendingBindings()
     }
 }

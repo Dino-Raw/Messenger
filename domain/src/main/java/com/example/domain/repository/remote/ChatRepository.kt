@@ -9,5 +9,5 @@ interface ChatRepository {
     suspend fun insertMessage(message: Message): Flow<Response<Boolean>>
     suspend fun updateMessage(message: Message): Flow<Response<Boolean>>
     suspend fun deleteMessage(messageId: String): Flow<Response<Boolean>>
-    suspend fun chatListener(): Flow<Response<Message>>
+    suspend fun chatListener(chatId: String): Flow<Response<Message>>
 }

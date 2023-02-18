@@ -24,7 +24,7 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ((activity as MessengerActivity).applicationContext as App).appComponent.inject(this)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ChatViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ChatViewModel::class.java]
         initUser()
     }
 
@@ -41,7 +41,24 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        observers()
     }
+
+    private fun observers() {
+        viewModel.chatId.observe(viewLifecycleOwner) { chatId ->
+            if (chatId.isNotBlank()) {
+                viewModel.initChatListener()
+                println(chatId)
+            }
+        }
+
+        viewModel.messageChatListener.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                viewModel.setMessageListAdapter()
+            }
+        }
+    }
+
     private fun initUser() {
         viewModel.toUser.value =
             requireArguments().getSerializable("user") as User

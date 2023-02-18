@@ -3,6 +3,8 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<data>
+		<import type="android.view.View"/>
+
 		<variable
 			name="message"
 			type="String" />
@@ -10,31 +12,52 @@
 		<variable
 			name="time"
 			type="String" />
+		
+		<variable
+			name="isCurrentUser"
+			type="Boolean" />
 	</data>
 
-	<androidx.cardview.widget.CardView
-		android:layout_width="wrap_content"
+	<RelativeLayout
+		android:padding="10dp"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
 		<RelativeLayout
+			android:id="@+id/to_user_layout"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:visibility="@{isCurrentUser ? View.GONE : View.VISIBLE}">
+			<TextView
+				android:id="@+id/to_user_message_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:hint="Message"
+				android:text="@{message}">
+			</TextView>
 
-<!--			<TextView-->
-<!--				android:id="@+id/name_text"-->
-<!--				android:layout_width="wrap_content"-->
-<!--				android:layout_height="wrap_content"-->
-<!--				android:text="Name">-->
-<!--			</TextView>-->
+			<TextView
+				android:id="@+id/to_user_time_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/to_user_message_text"
+				android:hint="Time"
+				android:text="@{time}">
+			</TextView>
+		</RelativeLayout>
 
+		<RelativeLayout
+			android:layout_alignParentEnd="true"
+			android:layout_below="@id/to_user_layout"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:visibility="@{isCurrentUser ? View.VISIBLE : View.GONE}">
 			<TextView
 				android:id="@+id/message_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:hint="Message"
 				android:text="@{message}">
-<!--				android:layout_below="@id/name_text"-->
-
 			</TextView>
 
 			<TextView
@@ -47,5 +70,5 @@
 			</TextView>
 
 		</RelativeLayout>
-	</androidx.cardview.widget.CardView>
+	</RelativeLayout>
 </layout>

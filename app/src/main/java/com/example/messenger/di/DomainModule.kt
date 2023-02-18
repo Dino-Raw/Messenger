@@ -57,10 +57,9 @@ class DomainModule {
     fun provideInsertMessageUseCase(repository: ChatRepository) =
         InsertMessageUseCase(repository = repository)
 
-
-
-
-
+    @Provides
+    fun provideGetChatListenerUseCase(repository: ChatRepository) =
+        GetChatListenerUseCase(repository = repository)
 
     @Provides
     fun provideGetRandomStringUseCase() =

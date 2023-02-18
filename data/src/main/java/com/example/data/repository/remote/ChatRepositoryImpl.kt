@@ -25,7 +25,7 @@ class ChatRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun chatListener(): Flow<Response<Message>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun chatListener(chatId: String): Flow<Response<Message>> =
+        firebaseChatStorage.chatListener(chatId = chatId)
+
 }
