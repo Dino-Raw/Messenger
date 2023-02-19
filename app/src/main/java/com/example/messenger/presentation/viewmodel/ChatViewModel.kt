@@ -1,5 +1,7 @@
 package com.example.messenger.presentation.viewmodel
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.domain.model.Message
 import com.example.domain.model.Response
@@ -9,6 +11,9 @@ import com.example.domain.usecase.InsertMessageUseCase
 import com.example.messenger.presentation.adapter.ChatMessageListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -52,8 +57,11 @@ class ChatViewModel @Inject constructor(
                     Message(
                         userId = currentUserId,
                         body = messageBody.value,
-                        timestamp = "0000000000",
-                        chatId = chatId.value
+                        timestamp = DateTimeFormatter
+                            .ofPattern("HH:mm")
+                            .withZone(ZoneOffset.systemDefault())
+                            .format(Instant.now()),
+                        chatId = chatId.value,
                     )
                 ).collect { response ->
                     if (response is Response.Success)
