@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.User
 import com.example.messenger.R
 import com.example.messenger.app.App
@@ -24,8 +25,9 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ((activity as MessengerActivity).applicationContext as App).appComponent.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[ChatViewModel::class.java]
-        initUser()
+        viewModel = ViewModelProvider(this, viewModelFactory)[ChatViewModel::class.java].apply {
+            initFields(requireArguments().getSerializable("user") as User)
+        }
     }
 
     override fun onCreateView(
@@ -42,25 +44,15 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         observers()
+
+        binding.chatBackBtn.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun observers() {
-        viewModel.chatId.observe(viewLifecycleOwner) { chatId ->
-            if (chatId.isNotBlank()) {
-                viewModel.initChatListener()
-                println(chatId)
-            }
-        }
-
-        viewModel.messageChatListener.observe(viewLifecycleOwner) { response ->
+        viewModel.messageList.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 viewModel.setMessageListAdapter()
             }
         }
-    }
-
-    private fun initUser() {
-        viewModel.toUser.value =
-            requireArguments().getSerializable("user") as User
     }
 }

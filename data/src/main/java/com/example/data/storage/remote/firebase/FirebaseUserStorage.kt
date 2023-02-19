@@ -15,9 +15,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
+import javax.inject.Named
 
 class FirebaseUserStorage @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
+    @Named("CurrentUserId") val currentUserId: String,
     private val firebaseDatabase: FirebaseDatabase,
 ): UserStorage {
     override suspend fun getUser(userId: String): Flow<Response<User>> = callbackFlow {
@@ -50,7 +51,7 @@ class FirebaseUserStorage @Inject constructor(
                 snapshot.children.forEach { userSnapshot ->
                     val currentUser: CurrentUser = userSnapshot.getValue(CurrentUser::class.java) as CurrentUser
 
-                    if (currentUser.id != firebaseAuth.currentUser?.uid)
+                    if (currentUser.id != currentUserId)
                         userArray.add(currentUser.toUser())
                 }
 

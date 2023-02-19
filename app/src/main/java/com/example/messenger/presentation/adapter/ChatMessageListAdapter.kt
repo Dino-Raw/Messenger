@@ -10,9 +10,9 @@ import com.example.messenger.databinding.RowChatMessageBinding
 import com.example.messenger.presentation.viewholder.ChatMessageListViewHolder
 import javax.inject.Inject
 
-class ChatMessageListAdapter @Inject constructor(): RecyclerView.Adapter<ChatMessageListViewHolder>() {
-    var currentId = ""
-
+class ChatMessageListAdapter @Inject constructor(
+): RecyclerView.Adapter<ChatMessageListViewHolder>() {
+    lateinit var currentUserId: String
     private val differCallback =
         object : DiffUtil.ItemCallback<Message>(){
             override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean =
@@ -22,17 +22,23 @@ class ChatMessageListAdapter @Inject constructor(): RecyclerView.Adapter<ChatMes
                 oldItem == newItem
     }
 
-    val differ = AsyncListDiffer(this, differCallback)
+    val differ =
+        object : AsyncListDiffer<Message>(this, differCallback) {
+            override fun submitList(newList: MutableList<Message>?) {
+                super.submitList(newList)
+                notifyDataSetChanged()
+            }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatMessageListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = RowChatMessageBinding.inflate(layoutInflater)
-        return ChatMessageListViewHolder(binding)
+        return ChatMessageListViewHolder(binding, currentUserId)
     }
 
     override fun getItemCount(): Int = differ.currentList.size
 
     override fun onBindViewHolder(holder: ChatMessageListViewHolder, position: Int) {
-        holder.bind(message = differ.currentList[position], currentId = currentId)
+        holder.bind(message = differ.currentList[position])
     }
 }

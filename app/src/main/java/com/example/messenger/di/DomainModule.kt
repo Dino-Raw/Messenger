@@ -46,10 +46,6 @@ class DomainModule {
         InsertNewUserUseCase(repository = repository)
 
     @Provides
-    fun provideGetCurrentUserIdUseCase(repository: CurrentUserRepository) =
-        GetCurrentUserIdUseCase(repository = repository)
-
-    @Provides
     fun provideGetUserList(repository: UserRepository) =
         GetUserListUseCase(repository = repository)
 
