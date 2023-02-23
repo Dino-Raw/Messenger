@@ -19,7 +19,7 @@ class FirebaseUserImagesStorage @Inject constructor(
         trySend(Response.Loading())
 
         val imageReference =
-            firebaseStorage.getReference("/${firebaseAuth.currentUser?.uid}/profile.jpg")
+            firebaseStorage.getReference("/${firebaseAuth.currentUser?.uid}/Profile_images/${Uri.parse(imageProfilePath).path?.substringAfterLast("/")}")
 
         imageReference.putFile(Uri.parse(imageProfilePath)).addOnCompleteListener {
             imageReference.downloadUrl.addOnSuccessListener { uri ->
@@ -38,7 +38,7 @@ class FirebaseUserImagesStorage @Inject constructor(
         trySend(Response.Loading())
 
         val imageReference =
-            firebaseStorage.getReference("/${firebaseAuth.currentUser?.uid}/profile.jpg")
+            firebaseStorage.getReference("/${firebaseAuth.currentUser?.uid}/Profile_images/profile.jpg")
 
         imageReference.delete()
             .addOnSuccessListener {

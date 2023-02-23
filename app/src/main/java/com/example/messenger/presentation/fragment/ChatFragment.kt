@@ -1,11 +1,13 @@
 package com.example.messenger.presentation.fragment
 
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.User
 import com.example.messenger.R
@@ -14,6 +16,10 @@ import com.example.messenger.databinding.FragmentChatBinding
 import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
 import com.example.messenger.presentation.viewmodel.ChatViewModel
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ChatFragment: Fragment(R.layout.fragment_chat) {
@@ -44,7 +50,6 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         observers()
-
         binding.chatBackBtn.setOnClickListener { findNavController().popBackStack() }
     }
 
@@ -53,6 +58,11 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
             if (response != null) {
                 viewModel.setMessageListAdapter()
             }
+        }
+
+        viewModel.toUser.observe(viewLifecycleOwner) { user ->
+            if (user.imagePath?.isNotBlank() == true)
+                Picasso.get().load(user.imagePath).into(binding.toUserImage)
         }
     }
 }

@@ -17,7 +17,9 @@ import com.example.messenger.databinding.FragmentProfileBinding
 import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
 import com.example.messenger.presentation.viewmodel.ProfileViewModel
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
+import kotlin.math.abs
 
 class ProfileFragment: Fragment(R.layout.fragment_profile) {
     @Inject lateinit var viewModelFactory: ViewModelFactory
@@ -46,9 +48,23 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         observers()
+
+        binding.profileAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            println(verticalOffset)
+            if (abs(verticalOffset) in 0..565)
+                binding.profileBackBtn.drawable.setTint(resources.getColor(R.color.white))
+            else
+                binding.profileBackBtn.drawable.setTint(resources.getColor(R.color.black))
+
+        }
     }
 
     private fun observers() {
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            if (user.imagePath?.isNotBlank() == true)
+                Picasso.get().load(user.imagePath).into(binding.userImage)
+        }
+
         viewModel.navigationAction.observe(viewLifecycleOwner) { navigationAction ->
             when (navigationAction) {
                 "ChatFragment" -> {
