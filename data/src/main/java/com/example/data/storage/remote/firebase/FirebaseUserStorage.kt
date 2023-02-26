@@ -25,8 +25,8 @@ class FirebaseUserStorage @Inject constructor(
         trySend(Response.Loading())
 
         firebaseDatabase.getReference("/Users/$userId").get()
-            .addOnSuccessListener { result ->
-                val currentUser = result.getValue(CurrentUser::class.java)
+            .addOnSuccessListener { userSnapshot ->
+                val currentUser = userSnapshot.getValue(CurrentUser::class.java)
 
                 if (currentUser != null) {
                     trySend(Response.Success(data = currentUser.toUser()))
@@ -49,7 +49,8 @@ class FirebaseUserStorage @Inject constructor(
                 val userArray: ArrayList<User> = ArrayList()
 
                 snapshot.children.forEach { userSnapshot ->
-                    val currentUser: CurrentUser = userSnapshot.getValue(CurrentUser::class.java) as CurrentUser
+                    val currentUser: CurrentUser =
+                        userSnapshot.getValue(CurrentUser::class.java) as CurrentUser
 
                     if (currentUser.id != currentUserId)
                         userArray.add(currentUser.toUser())

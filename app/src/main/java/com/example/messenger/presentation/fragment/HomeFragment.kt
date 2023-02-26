@@ -13,6 +13,7 @@ import com.example.messenger.databinding.FragmentHomeBinding
 import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
 import com.example.messenger.presentation.viewmodel.HomeViewModel
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 class HomeFragment: Fragment() {
@@ -52,6 +53,19 @@ class HomeFragment: Fragment() {
                 }
                 else -> {}
             }
+        }
+
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            if (user.imagePath?.isNotBlank() == true)
+                Picasso.get().load(user.imagePath).into(binding.userBtn)
+
+            if (user.chats?.isNotEmpty() == true)
+                viewModel.getChatList()
+        }
+
+        viewModel.chatList.observe(viewLifecycleOwner) { chatList ->
+            viewModel.setChatsListAdapter()
+            println(chatList)
         }
     }
 }

@@ -9,5 +9,4 @@ interface CurrentUserStorage {
     suspend fun delete(): Flow<Response<Boolean>>
     suspend fun update(currentUser: CurrentUser): Flow<Response<Boolean>>
     suspend fun getUser(): Flow<Response<CurrentUser>>
-    suspend fun getUserId(): Flow<Response<String>>
 }

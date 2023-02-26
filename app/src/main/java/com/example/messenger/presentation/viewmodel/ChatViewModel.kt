@@ -1,12 +1,10 @@
 package com.example.messenger.presentation.viewmodel
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.domain.model.Message
 import com.example.domain.model.Response
 import com.example.domain.model.User
-import com.example.domain.usecase.GetChatListenerUseCase
+import com.example.domain.usecase.GetMessageListenerUseCase
 import com.example.domain.usecase.InsertMessageUseCase
 import com.example.messenger.presentation.adapter.ChatMessageListAdapter
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +17,7 @@ import javax.inject.Named
 
 class ChatViewModel @Inject constructor(
     private val insertMessageUseCase: InsertMessageUseCase,
-    private val getChatListenerUseCase: GetChatListenerUseCase,
+    private val getMessageListenerUseCase: GetMessageListenerUseCase,
     val chatMessageListAdapter: ChatMessageListAdapter,
     @Named("CurrentUserId") val currentUserId: String,
 ): ViewModel() {
@@ -38,7 +36,7 @@ class ChatViewModel @Inject constructor(
         chatMessageListAdapter.currentUserId = currentUserId
 
         viewModelScope.launch(Dispatchers.IO) {
-            getChatListenerUseCase.execute(chatId = chatId.value!!).collect {
+            getMessageListenerUseCase.execute(chatId = chatId.value!!).collect {
                 if (it is Response.Success && messageList.value?.contains(it.data) != true) {
                     messageList.postValue(messageList.value?.apply { add(0, it.data) })
                 }

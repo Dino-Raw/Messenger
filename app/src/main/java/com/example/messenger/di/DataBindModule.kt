@@ -34,6 +34,12 @@ interface DataBindModule {
     fun bindUserStorage(impl: FirebaseUserStorage): UserStorage
 
     @Binds
+    fun bindMessageRepository(impl: MessageRepositoryImpl): MessageRepository
+
+    @Binds
+    fun bindMessageStorage(impl: FirebaseMessageStorage): MessageStorage
+
+    @Binds
     fun bindChatRepository(impl: ChatRepositoryImpl): ChatRepository
 
     @Binds

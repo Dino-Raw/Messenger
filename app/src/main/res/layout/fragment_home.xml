@@ -17,7 +17,7 @@
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/home_toolbar"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="?attr/actionBarSize"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent">
@@ -25,14 +25,14 @@
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
-				<ImageButton
+				<ImageView
 					android:id="@+id/user_btn"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_width="40dp"
+					android:layout_height="40dp"
 					android:layout_centerVertical="true"
-					android:background="@drawable/ic_account_24"
+					android:src="@drawable/ic_account_24"
 					android:layout_alignParentStart="true">
-				</ImageButton>
+				</ImageView>
 
 				<TextView
 					android:id="@+id/user_name_text"
@@ -62,6 +62,10 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:orientation="vertical"
+			android:paddingHorizontal="15dp"
+			android:nestedScrollingEnabled="false"
+			app:setAdapter="@{viewModel.chatsListAdapter}"
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 			app:layout_constraintTop_toBottomOf="@id/home_toolbar"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"

@@ -10,16 +10,17 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
+import javax.inject.Named
 
 class FirebaseUserImagesStorage @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
     private val firebaseStorage: FirebaseStorage,
+    @Named("CurrentUserId") val currentUserId: String,
 ): UserImagesStorage {
     override suspend fun insert(imageProfilePath: String): Flow<Response<String>> = callbackFlow {
         trySend(Response.Loading())
 
         val imageReference =
-            firebaseStorage.getReference("/${firebaseAuth.currentUser?.uid}/Profile_images/${Uri.parse(imageProfilePath).path?.substringAfterLast("/")}")
+            firebaseStorage.getReference("/$currentUserId/Profile_images/${Uri.parse(imageProfilePath).path?.substringAfterLast("/")}")
 
         imageReference.putFile(Uri.parse(imageProfilePath)).addOnCompleteListener {
             imageReference.downloadUrl.addOnSuccessListener { uri ->
@@ -38,7 +39,7 @@ class FirebaseUserImagesStorage @Inject constructor(
         trySend(Response.Loading())
 
         val imageReference =
-            firebaseStorage.getReference("/${firebaseAuth.currentUser?.uid}/Profile_images/profile.jpg")
+            firebaseStorage.getReference("/$currentUserId/Profile_images/profile.jpg")
 
         imageReference.delete()
             .addOnSuccessListener {
