@@ -1,65 +1,65 @@
 package com.example.messenger.presentation.viewmodel
 
 import androidx.lifecycle.*
+import com.example.domain.model.Chat
 import com.example.domain.model.Message
 import com.example.domain.model.Response
 import com.example.domain.model.User
-import com.example.domain.usecase.GetMessageListenerUseCase
+import com.example.domain.usecase.GetChatByMemberUseCase
+import com.example.domain.usecase.GetMessagesUseCase
 import com.example.domain.usecase.InsertMessageUseCase
 import com.example.messenger.presentation.adapter.ChatMessageListAdapter
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Named
 
 class ChatViewModel @Inject constructor(
     private val insertMessageUseCase: InsertMessageUseCase,
-    private val getMessageListenerUseCase: GetMessageListenerUseCase,
+    private val getChatByMemberUseCase: GetChatByMemberUseCase,
+    private val getMessagesUseCase: GetMessagesUseCase,
     val chatMessageListAdapter: ChatMessageListAdapter,
     @Named("CurrentUserId") val currentUserId: String,
 ): ViewModel() {
     var messageBody: MutableLiveData<String> = MutableLiveData("")
     var toUser: MutableLiveData<User> = MutableLiveData()
-    var chatId: MutableLiveData<String> = MutableLiveData()
-    var messageList: MutableLiveData<MutableList<Message>> = MutableLiveData(mutableListOf())
+    var messageList: MutableLiveData<MutableList<Message>?> = MutableLiveData(mutableListOf())
+    var chat: MutableLiveData<Chat?> = MutableLiveData()
 
-    fun initFields(user: User) {
-        toUser.value = user
-
-        chatId.value = listOf(currentUserId, toUser.value?.id.toString())
-            .sorted()
-            .joinToString(prefix = "", postfix = "", separator = "")
-
+    init {
         chatMessageListAdapter.currentUserId = currentUserId
-
-        viewModelScope.launch(Dispatchers.IO) {
-            getMessageListenerUseCase.execute(chatId = chatId.value!!).collect {
-                if (it is Response.Success && messageList.value?.contains(it.data) != true) {
-                    messageList.postValue(messageList.value?.apply { add(0, it.data) })
-                }
-            }
-        }
     }
 
     fun setMessageListAdapter() {
         chatMessageListAdapter.differ.submitList(messageList.value)
     }
 
+    fun initMessageListener() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getMessagesUseCase.execute(chatId = chat.value?.id!!).collect { response ->
+                if (response is Response.Success) messageList.postValue(response.data)
+            }
+        }
+    }
+
+    fun initChat() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getChatByMemberUseCase.execute(toUser.value?.id!!).collect { response ->
+                if (response is Response.Success) chat.postValue(response.data)
+            }
+        }
+    }
+
     fun insertMessage() {
-        if (chatId.value?.isNotBlank() == true && messageBody.value?.isNotBlank() == true)
+        if (chat.value?.id?.isNotBlank() == true && messageBody.value?.isNotBlank() == true)
             viewModelScope.launch(Dispatchers.IO) {
                 insertMessageUseCase.execute(
+                    chat.value?.id!!,
                     Message(
-                        userId = currentUserId,
+                        sender = currentUserId,
                         body = messageBody.value,
-                        timestamp = DateTimeFormatter
-                            .ofPattern("HH:mm")
-                            .withZone(ZoneOffset.systemDefault())
-                            .format(Instant.now()),
-                        chatId = chatId.value,
+                        timestamp = Timestamp.now().seconds.toString(),
                     )
                 ).collect { response ->
                     if (response is Response.Success)

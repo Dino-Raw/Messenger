@@ -62,14 +62,18 @@ class DomainModule {
         InsertMessageUseCase(repository = repository)
 
     @Provides
-    fun provideGetMessageListenerUseCase(repository: MessageRepository) =
-        GetMessageListenerUseCase(repository = repository)
+    fun provideGetMessagesUseCase(repository: MessageRepository) =
+        GetMessagesUseCase(repository = repository)
 
     @Provides
-    fun provideGetRecentMessageUseCase(repository: MessageRepository) =
-        GetRecentMessageUseCase(repository = repository)
+    fun provideGetChatByIdUseCase(repository: ChatRepository) =
+        GetChatByIdUseCase(repository = repository)
 
     @Provides
-    fun provideGetChatUseCase(repository: ChatRepository) =
-        GetChatUseCase(repository = repository)
+    fun provideGetChatByMemberUseCase(repository: ChatRepository) =
+        GetChatByMemberUseCase(repository = repository)
+
+    @Provides
+    fun provideGetChatListUseCase(repository: ChatRepository) =
+        GetChatListUseCase(repository = repository)
 }

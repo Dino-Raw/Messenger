@@ -66,5 +66,9 @@ class SignUpFragment: Fragment() {
         viewModel.message.observe(viewLifecycleOwner) { message ->
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
+
+        viewModel._currentUser.observe(viewLifecycleOwner) { user ->
+            if (user != null) viewModel.insertNewUser()
+        }
     }
 }

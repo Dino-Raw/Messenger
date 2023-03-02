@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.model.Chat
 import com.example.messenger.presentation.model.HomeChatItem
 import com.example.messenger.databinding.RowChatBinding
 import com.example.messenger.presentation.viewholder.HomeChatsListViewHolder
@@ -14,17 +15,17 @@ class HomeChatsListAdapter@Inject constructor(
 
 ): RecyclerView.Adapter<HomeChatsListViewHolder>() {
     private val differCallback =
-        object : DiffUtil.ItemCallback<HomeChatItem>(){
-            override fun areItemsTheSame(oldItem: HomeChatItem, newItem: HomeChatItem): Boolean =
-                oldItem.chatId == newItem.chatId
+        object : DiffUtil.ItemCallback<Chat>(){
+            override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean =
+                oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: HomeChatItem, newItem: HomeChatItem): Boolean =
+            override fun areContentsTheSame(oldItem: Chat, newItem: Chat): Boolean =
                 oldItem == newItem
         }
 
     val differ =
-        object : AsyncListDiffer<HomeChatItem>(this, differCallback) {
-            override fun submitList(newList: MutableList<HomeChatItem>?) {
+        object : AsyncListDiffer<Chat>(this, differCallback) {
+            override fun submitList(newList: MutableList<Chat>?) {
                 super.submitList(newList)
                 notifyDataSetChanged()
             }

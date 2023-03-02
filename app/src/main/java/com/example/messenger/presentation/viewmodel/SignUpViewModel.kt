@@ -10,6 +10,7 @@ import com.example.domain.usecase.SignUpUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
@@ -21,6 +22,7 @@ class SignUpViewModel @Inject constructor(
     val password: MutableLiveData<String> = MutableLiveData("")
     val confirmPassword: MutableLiveData<String> = MutableLiveData("")
 
+    var _currentUser: MutableLiveData<CurrentUser> = MutableLiveData()
     private val _isVisiblyProgressBar: MutableLiveData<Int> = MutableLiveData(View.GONE)
     var isVisiblyProgressBar: LiveData<Int> = _isVisiblyProgressBar
 
@@ -55,19 +57,19 @@ class SignUpViewModel @Inject constructor(
                             _message.postValue(response.e.message)
                     }
                     is Response.Success -> {
-                        insertNewUser()
+                        _currentUser.postValue(currentUser.also {
+                            it.email = email.value
+                            it.name = email.value?.substringBefore("@")
+                        })
                     }
                 }
             }
         }
     }
 
-    private fun insertNewUser() {
+    fun insertNewUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            insertNewUserUseCase.execute(currentUser.also {
-                it.email = email.value
-                it.name = email.value?.substringBefore("@")
-            }).collect { response ->
+            insertNewUserUseCase.execute(_currentUser.value!!).collect { response ->
                 when (response) {
                     is Response.Loading ->
                         _isVisiblyProgressBar.postValue(View.VISIBLE)

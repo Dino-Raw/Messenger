@@ -28,6 +28,11 @@ class ChatMessageListAdapter @Inject constructor(
                 super.submitList(newList)
                 notifyDataSetChanged()
             }
+
+            override fun addListListener(listener: ListListener<Message>) {
+                super.addListListener(listener)
+
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatMessageListViewHolder {

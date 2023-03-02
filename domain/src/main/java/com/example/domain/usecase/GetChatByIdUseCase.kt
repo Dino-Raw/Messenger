@@ -5,7 +5,7 @@ import com.example.domain.model.Response
 import com.example.domain.repository.remote.ChatRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetChatUseCase(private val repository: ChatRepository) {
+class GetChatByIdUseCase(private val repository: ChatRepository) {
     suspend fun execute(chatId: String): Flow<Response<Chat>> =
-        repository.getChat(chatId = chatId)
+        repository.getChatById(chatId = chatId)
 }

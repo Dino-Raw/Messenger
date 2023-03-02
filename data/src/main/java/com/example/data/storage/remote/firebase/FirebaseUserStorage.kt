@@ -5,11 +5,8 @@ import com.example.data.storage.remote.UserStorage
 import com.example.domain.model.Response
 import com.example.domain.model.CurrentUser
 import com.example.domain.model.User
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,53 +15,60 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class FirebaseUserStorage @Inject constructor(
+    private val firebaseFirestore: FirebaseFirestore,
     @Named("CurrentUserId") val currentUserId: String,
-    private val firebaseDatabase: FirebaseDatabase,
 ): UserStorage {
     override suspend fun getUser(userId: String): Flow<Response<User>> = callbackFlow {
         trySend(Response.Loading())
 
-        firebaseDatabase.getReference("/Users/$userId").get()
-            .addOnSuccessListener { userSnapshot ->
-                val currentUser = userSnapshot.getValue(CurrentUser::class.java)
-
-                if (currentUser != null) {
-                    trySend(Response.Success(data = currentUser.toUser()))
-                } else {
-                    trySend(Response.Fail(e = Exception("No such user")))
+        val listener = firebaseFirestore.collection("users").document(userId)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    trySend(Response.Fail(e = Exception(error.message)))
+                    close()
                 }
 
-            }.addOnFailureListener { e ->
-                trySend(Response.Fail(e = e))
-            }
+                if (value != null && value.exists())
+                    value.toObject(CurrentUser::class.java)?.also {  currentUser ->
+                        trySend(Response.Success(data = currentUser.toUser()))
+                    }
+                else
+                    trySend(Response.Fail(e = Exception("No such user")))
+          }
 
-        awaitClose { this.cancel() }
+        awaitClose {
+            listener.remove()
+            this.cancel()
+        }
     }
 
     override suspend fun getUserList(): Flow<Response<ArrayList<User>>> = callbackFlow {
         trySend(Response.Loading())
 
-        firebaseDatabase.getReference("/Users/").addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val userArray: ArrayList<User> = ArrayList()
-
-                snapshot.children.forEach { userSnapshot ->
-                    val currentUser: CurrentUser =
-                        userSnapshot.getValue(CurrentUser::class.java) as CurrentUser
-
-                    if (currentUser.id != currentUserId)
-                        userArray.add(currentUser.toUser())
+        val listener = firebaseFirestore.collection("users")
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    trySend(Response.Fail(e = Exception(error.message)))
+                    close()
                 }
 
-                trySend(Response.Success(data = userArray))
+                val userList = arrayListOf<User>()
+
+                value?.documents?.forEach { snapshot ->
+                    snapshot?.toObject(CurrentUser::class.java)?.also {  currentUser ->
+                        if (currentUser.id != currentUserId) userList.add(currentUser.toUser())
+                    }
+                }
+
+                if (userList.isNotEmpty())
+                    trySend(Response.Success(data = userList))
+                else
+                    trySend(Response.Fail(e = Exception("No such users")))
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                trySend(Response.Fail(e = error.toException()))
-            }
-
-        })
-
-        awaitClose { this.cancel() }
+        awaitClose {
+            listener.remove()
+            this.cancel()
+        }
     }
 }

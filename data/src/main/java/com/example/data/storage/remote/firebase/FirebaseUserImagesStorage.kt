@@ -20,7 +20,7 @@ class FirebaseUserImagesStorage @Inject constructor(
         trySend(Response.Loading())
 
         val imageReference =
-            firebaseStorage.getReference("/$currentUserId/Profile_images/${Uri.parse(imageProfilePath).path?.substringAfterLast("/")}")
+            firebaseStorage.getReference("/$currentUserId/profile_images/${Uri.parse(imageProfilePath).path?.substringAfterLast("/")}")
 
         imageReference.putFile(Uri.parse(imageProfilePath)).addOnCompleteListener {
             imageReference.downloadUrl.addOnSuccessListener { uri ->
@@ -32,7 +32,7 @@ class FirebaseUserImagesStorage @Inject constructor(
             trySend(Response.Fail(e = e))
         }
 
-        awaitClose { this.cancel() }
+        awaitClose { cancel() }
     }
 
     override suspend fun delete(): Flow<Response<Boolean>> = callbackFlow {
@@ -48,6 +48,6 @@ class FirebaseUserImagesStorage @Inject constructor(
                 trySend(Response.Fail(e = e))
             }
 
-        awaitClose { this.cancel() }
+        awaitClose { cancel() }
     }
 }

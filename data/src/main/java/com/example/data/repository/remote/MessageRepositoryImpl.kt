@@ -10,16 +10,11 @@ import javax.inject.Inject
 class MessageRepositoryImpl @Inject constructor(
     private val messageStorage: MessageStorage,
 ): MessageRepository {
-    override suspend fun getMessages(chatId: String): Flow<Response<ArrayList<Message>>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getMessages(chatId: String): Flow<Response<ArrayList<Message>>> =
+        messageStorage.getMessages(chatId = chatId)
 
-    override suspend fun getRecentMessage(chatId: String): Flow<Response<Message>> =
-        messageStorage.getRecentMessage(chatId = chatId)
-
-
-    override suspend fun insertMessage(message: Message): Flow<Response<Boolean>> =
-        messageStorage.insertMessage(message = message)
+    override suspend fun insertMessage(chatId: String, message: Message): Flow<Response<Boolean>> =
+        messageStorage.insertMessage(chatId = chatId, message = message)
 
     override suspend fun updateMessage(message: Message): Flow<Response<Boolean>> {
         TODO("Not yet implemented")
@@ -28,8 +23,4 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun deleteMessage(messageId: String): Flow<Response<Boolean>> {
         TODO("Not yet implemented")
     }
-
-    override suspend fun chatListener(chatId: String): Flow<Response<Message>> =
-        messageStorage.chatListener(chatId = chatId)
-
 }

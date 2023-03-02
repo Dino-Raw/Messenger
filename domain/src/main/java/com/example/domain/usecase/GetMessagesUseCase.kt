@@ -5,7 +5,7 @@ import com.example.domain.model.Response
 import com.example.domain.repository.remote.MessageRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetRecentMessageUseCase(private val repository: MessageRepository) {
-    suspend fun execute(chatId: String): Flow<Response<Message>> =
-        repository.getRecentMessage(chatId = chatId)
+class GetMessagesUseCase(private val repository: MessageRepository) {
+    suspend fun execute(chatId: String): Flow<Response<ArrayList<Message>>> =
+        repository.getMessages(chatId = chatId)
 }

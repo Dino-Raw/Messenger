@@ -65,7 +65,6 @@ class HomeFragment: Fragment() {
 
         viewModel.chatList.observe(viewLifecycleOwner) { chatList ->
             viewModel.setChatsListAdapter()
-            println(chatList)
         }
     }
 }

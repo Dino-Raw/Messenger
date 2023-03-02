@@ -50,7 +50,6 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
         observers()
 
         binding.profileAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            println(verticalOffset)
             if (abs(verticalOffset) in 0..565)
                 binding.profileBackBtn.drawable.setTint(resources.getColor(R.color.white))
             else

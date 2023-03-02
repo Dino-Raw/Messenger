@@ -6,6 +6,6 @@ import com.example.domain.repository.remote.MessageRepository
 import kotlinx.coroutines.flow.Flow
 
 class InsertMessageUseCase(private val repository: MessageRepository) {
-    suspend fun execute(message: Message): Flow<Response<Boolean>> =
-        repository.insertMessage(message = message)
+    suspend fun execute(chatId: String, message: Message): Flow<Response<Boolean>> =
+        repository.insertMessage(chatId = chatId, message = message)
 }

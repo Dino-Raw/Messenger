@@ -1,14 +1,13 @@
 package com.example.messenger.presentation.fragment
 
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.domain.model.User
 import com.example.messenger.R
 import com.example.messenger.app.App
@@ -17,9 +16,6 @@ import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
 import com.example.messenger.presentation.viewmodel.ChatViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ChatFragment: Fragment(R.layout.fragment_chat) {
@@ -32,14 +28,14 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
         super.onCreate(savedInstanceState)
         ((activity as MessengerActivity).applicationContext as App).appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[ChatViewModel::class.java].apply {
-            initFields(requireArguments().getSerializable("user") as User)
+            toUser.value = requireArguments().getSerializable("user") as User
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentChatBinding.inflate(inflater)
         return binding.root
@@ -57,12 +53,29 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
         viewModel.messageList.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 viewModel.setMessageListAdapter()
+
+                binding.messagesRecyclerview.post {
+                    binding.messagesRecyclerview.layoutManager?.scrollToPosition(0)
+                }
             }
         }
 
         viewModel.toUser.observe(viewLifecycleOwner) { user ->
-            if (user.imagePath?.isNotBlank() == true)
+            if (user.imagePath?.isNotBlank() == true) {
                 Picasso.get().load(user.imagePath).into(binding.toUserImage)
+                viewModel.initChat()
+            }
         }
+
+        viewModel.chat.observe(viewLifecycleOwner) { chat ->
+            if (chat != null) viewModel.initMessageListener()
+        }
+
+        viewModel.chatMessageListAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.messagesRecyclerview.layoutManager?.scrollToPosition(0)
+            }
+        })
     }
 }

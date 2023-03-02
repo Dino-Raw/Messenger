@@ -31,7 +31,7 @@ class FirebaseAuthStorage @Inject constructor(
         else
             trySend(Response.Fail(e = Exception("Data entry fields are empty")))
 
-        awaitClose { this.cancel() }
+        awaitClose { cancel() }
     }
 
     override suspend fun signIn(userAuth: UserAuth): Flow<Response<Boolean>> = callbackFlow {
@@ -49,14 +49,13 @@ class FirebaseAuthStorage @Inject constructor(
         else
             trySend(Response.Fail(e = Exception("Data entry fields are empty")))
 
-        awaitClose { this.cancel() }
+        awaitClose { cancel() }
     }
 
     override suspend fun signOut(): Flow<Response<Boolean>> = callbackFlow {
         trySend(Response.Loading())
         firebaseAuth.signOut()
         trySend(Response.Success(data = true))
-        awaitClose { this.cancel() }
     }
 
     override suspend fun checkSignIn(): Flow<Response<Boolean>> = callbackFlow {
@@ -67,7 +66,7 @@ class FirebaseAuthStorage @Inject constructor(
         else
             trySend(Response.Fail(Exception("")))
 
-        awaitClose { this.cancel() }
+        awaitClose { cancel() }
     }
 
 }
