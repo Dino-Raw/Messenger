@@ -34,19 +34,11 @@ class ChatViewModel @Inject constructor(
     val messageList: MutableLiveData<ArrayList<Message>?> =
         MediatorLiveData<ArrayList<Message>?>().apply { addSource(chat) { initMessageListener() } }
 
-    fun initToUser(userId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getUserUseCase.execute(userId = userId).collect { response ->
-                if (response is Response.Success) toUser.postValue(response.data)
-            }
-        }
-    }
-
     fun insertMessage() {
         if (messageBody.value?.isNotBlank() == true)
             viewModelScope.launch(Dispatchers.IO) {
                 if (chat.value == null)
-                    withContext(Dispatchers.Main) { insertChat() }
+                    withContext(Dispatchers.Main) { initChatListener() }
 
                 if (chat.value != null)
                     insertMessageUseCase.execute(
@@ -69,20 +61,48 @@ class ChatViewModel @Inject constructor(
         chatMessageListAdapter.differ.submitList(messageList.value)
     }
 
-    fun initChatListenerByChatId(chatId: String) {
+    fun initToUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            getChatByIdUseCase.execute(chatId = chatId).collect { response ->
-                if (response is Response.Success) chat.postValue(response.data)
+            getUserUseCase.execute(userId = userId).collect { response ->
+                if (response is Response.Success) toUser.postValue(response.data)
             }
         }
     }
 
-    fun initChatListenerByUserId(userId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getChatByMemberUseCase.execute(userId).collect { response ->
-                if (response is Response.Success) chat.postValue(response.data)
+    fun initChatListener(chatId: String? = null, userId: String? = null) {
+        fun insertChat() {
+            viewModelScope.launch(Dispatchers.IO) {
+                insertChatUseCase.execute(toUser.value?.id!!).collect { response ->
+                    if (response is Response.Success) {
+                        chat.postValue(response.data)
+                        insertMessage()
+                    }
+                }
             }
         }
+
+        fun initChatListenerByChatId(chatId: String) {
+            viewModelScope.launch(Dispatchers.IO) {
+                getChatByIdUseCase.execute(chatId = chatId).collect { response ->
+                    if (response is Response.Success) chat.postValue(response.data)
+                }
+            }
+        }
+
+        fun initChatListenerByUserId(userId: String) {
+            viewModelScope.launch(Dispatchers.IO) {
+                getChatByMemberUseCase.execute(userId).collect { response ->
+                    if (response is Response.Success) chat.postValue(response.data)
+                }
+            }
+        }
+
+        if (chatId != null)
+            initChatListenerByChatId(chatId = chatId)
+        else if (userId != null)
+            initChatListenerByUserId(userId = userId)
+        else
+            insertChat()
     }
 
     private fun updateChat(message: Message) {
@@ -107,14 +127,5 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    private fun insertChat() {
-        viewModelScope.launch(Dispatchers.IO) {
-            insertChatUseCase.execute(toUser.value?.id!!).collect { response ->
-                if (response is Response.Success) {
-                    chat.postValue(response.data)
-                    insertMessage()
-                }
-            }
-        }
-    }
+
 }

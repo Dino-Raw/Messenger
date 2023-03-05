@@ -12,9 +12,11 @@ import com.example.messenger.app.App
 import com.example.messenger.databinding.FragmentHomeBinding
 import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
+import com.example.messenger.presentation.util.transform
 import com.example.messenger.presentation.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
+
 
 class HomeFragment: Fragment() {
     @Inject lateinit var viewModelFactory: ViewModelFactory
@@ -31,7 +33,7 @@ class HomeFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
@@ -57,11 +59,16 @@ class HomeFragment: Fragment() {
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
             if (user.imagePath?.isNotBlank() == true)
-                Picasso.get().load(user.imagePath).into(binding.userBtn)
+                Picasso.get()
+                    .load(user.imagePath)
+                    .placeholder(R.drawable.ic_account_24)
+                    .transform(transform)
+                    .into(binding.userBtn)
         }
 
         viewModel.userList.observe(viewLifecycleOwner) {
             viewModel.setChatsListAdapter()
         }
     }
+
 }

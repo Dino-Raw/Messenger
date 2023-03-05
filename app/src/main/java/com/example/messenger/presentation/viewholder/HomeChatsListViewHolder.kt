@@ -7,6 +7,7 @@ import com.example.domain.model.Chat
 import com.example.messenger.presentation.model.HomeChatItem
 import com.example.messenger.R
 import com.example.messenger.databinding.RowChatBinding
+import com.example.messenger.presentation.util.transform
 import com.squareup.picasso.Picasso
 
 class HomeChatsListViewHolder(private val binding: RowChatBinding, private val currentUserId: String)
@@ -14,7 +15,11 @@ class HomeChatsListViewHolder(private val binding: RowChatBinding, private val c
 
     fun bind(chat: Chat) {
         if (chat.imagePath?.isNotBlank() == true)
-            Picasso.get().load(chat.imagePath).into(binding.chatImage)
+            Picasso.get()
+                .load(chat.imagePath)
+                .placeholder(R.drawable.ic_account_24)
+                .transform(transform)
+                .into(binding.chatImage)
 
         binding.name = chat.name
         binding.message = chat.messageBody

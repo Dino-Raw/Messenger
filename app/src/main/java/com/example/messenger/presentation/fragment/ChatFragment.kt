@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
-import com.example.domain.model.User
 import com.example.messenger.R
 import com.example.messenger.app.App
 import com.example.messenger.databinding.FragmentChatBinding
 import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
+import com.example.messenger.presentation.util.transform
 import com.example.messenger.presentation.viewmodel.ChatViewModel
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
@@ -36,11 +36,7 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
                 val chatId = getString("chatId")
 
                 initToUser(userId as String)
-
-                if (chatId != null)
-                    initChatListenerByChatId(chatId = chatId)
-                else
-                    initChatListenerByUserId(userId = userId)
+                initChatListener(chatId = chatId, userId = userId)
             }
 
             chatMessageListAdapter.currentUserId = currentUserId
@@ -67,7 +63,11 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
     private fun observers() {
         viewModel.toUser.observe(viewLifecycleOwner) { user ->
             if (user?.imagePath?.isNotBlank() == true)
-                Picasso.get().load(user.imagePath).into(binding.toUserImage)
+                Picasso.get()
+                    .load(user.imagePath)
+                    .placeholder(R.drawable.ic_account_24)
+                    .transform(transform)
+                    .into(binding.toUserImage)
         }
 
         viewModel.messageList.observe(viewLifecycleOwner) { messageList ->

@@ -28,12 +28,16 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="150dp"
+			android:paddingVertical="5dp"
+			android:paddingHorizontal="10dp"
 			android:visibility="@{isCurrentUser ? View.GONE : View.VISIBLE}"
-			android:background="@color/purple_500">
+			android:background="@drawable/message_other_user_background">
 			<TextView
 				android:id="@+id/to_user_message_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:textColor="#2d2d2d"
+				android:textSize="15sp"
 				android:hint="Message"
 				android:text="@{message}">
 			</TextView>
@@ -43,22 +47,29 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/to_user_message_text"
+				android:layout_alignEnd="@id/to_user_message_text"
+				android:textSize="10sp"
 				android:hint="Time"
 				android:text="@{time}">
 			</TextView>
 		</RelativeLayout>
 
 		<RelativeLayout
+			android:id="@+id/sender_layout"
 			android:layout_alignParentEnd="true"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="150dp"
+			android:paddingVertical="5dp"
+			android:paddingHorizontal="10dp"
 			android:visibility="@{isCurrentUser ? View.VISIBLE :  View.GONE}"
-			android:background="@color/purple_200">
+			android:background="@drawable/message_current_user_background">
 			<TextView
 				android:id="@+id/message_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:textColor="#2d2d2d"
+				android:textSize="15sp"
 				android:hint="Message"
 				android:text="@{message}">
 			</TextView>
@@ -68,6 +79,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/message_text"
+				android:layout_alignEnd="@id/message_text"
+				android:textSize="10sp"
 				android:hint="Time"
 				android:text="@{time}">
 			</TextView>

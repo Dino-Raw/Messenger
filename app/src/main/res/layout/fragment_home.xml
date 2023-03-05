@@ -25,6 +25,7 @@
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
+
 				<ImageView
 					android:id="@+id/user_btn"
 					android:layout_width="40dp"
@@ -35,19 +36,23 @@
 				</ImageView>
 
 				<TextView
+					style="@style/TextAppearance.Material3.ActionBar.Title"
 					android:id="@+id/user_name_text"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginStart="20dp"
 					android:layout_centerVertical="true"
 					android:layout_toEndOf="@id/user_btn"
-					android:text="Chats">
+					android:layout_toStartOf="@id/users_btn"
+					android:gravity="center"
+					android:text="Messages">
 				</TextView>
 
 				<ImageButton
 					android:id="@+id/users_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:padding="15dp"
 					android:layout_marginEnd="20dp"
 					android:layout_centerVertical="true"
 					android:background="@drawable/ic_people_24"
@@ -62,7 +67,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:orientation="vertical"
-			android:paddingHorizontal="15dp"
+			android:paddingHorizontal="10dp"
 			android:nestedScrollingEnabled="false"
 			app:setAdapter="@{viewModel.chatsListAdapter}"
 			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
