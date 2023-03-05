@@ -1,9 +1,11 @@
 package com.example.messenger.presentation.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -24,11 +26,24 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ((activity as MessengerActivity).applicationContext as App).appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[ChatViewModel::class.java].apply {
-            toUser.value = requireArguments().getSerializable("user") as User
+            requireArguments().apply {
+                val userId = getString("userId")
+                val chatId = getString("chatId")
+
+                initToUser(userId as String)
+
+                if (chatId != null)
+                    initChatListenerByChatId(chatId = chatId)
+                else
+                    initChatListenerByUserId(userId = userId)
+            }
+
+            chatMessageListAdapter.currentUserId = currentUserId
         }
     }
 
@@ -50,25 +65,13 @@ class ChatFragment: Fragment(R.layout.fragment_chat) {
     }
 
     private fun observers() {
-        viewModel.messageList.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                viewModel.setMessageListAdapter()
-
-                binding.messagesRecyclerview.post {
-                    binding.messagesRecyclerview.layoutManager?.scrollToPosition(0)
-                }
-            }
-        }
-
         viewModel.toUser.observe(viewLifecycleOwner) { user ->
-            if (user.imagePath?.isNotBlank() == true) {
+            if (user?.imagePath?.isNotBlank() == true)
                 Picasso.get().load(user.imagePath).into(binding.toUserImage)
-                viewModel.initChat()
-            }
         }
 
-        viewModel.chat.observe(viewLifecycleOwner) { chat ->
-            if (chat != null) viewModel.initMessageListener()
+        viewModel.messageList.observe(viewLifecycleOwner) { messageList ->
+            viewModel.setMessageListAdapter()
         }
 
         viewModel.chatMessageListAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {

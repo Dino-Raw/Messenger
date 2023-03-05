@@ -11,9 +11,6 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class ChatRepositoryImpl @Inject constructor(
-    private val repositoryUser: UserRepository,
-    private val repositoryMessage: MessageRepository,
-    @Named("CurrentUserId") private val currentUserId: String,
     private val chatStorage: ChatStorage,
 ): ChatRepository {
     override suspend fun getChatById(chatId: String): Flow<Response<Chat>> =
@@ -28,11 +25,9 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun updateChat(chat: Chat): Flow<Response<Boolean>> =
         chatStorage.updateChat(chat = chat)
 
-    override suspend fun insertChat(chat: Chat): Flow<Response<Boolean>> =
-        chatStorage.insertChat(chat = chat)
+    override suspend fun getChatList(): Flow<Response<ArrayList<Chat>>> =
+        chatStorage.getChatList()
 
-
-    override suspend fun getChatList(chatIdList: ArrayList<String>): Flow<Response<ArrayList<Chat>>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun insertChat(toUserId: String): Flow<Response<Chat>> =
+        chatStorage.insertChat(toUserId = toUserId)
 }

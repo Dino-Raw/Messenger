@@ -58,12 +58,9 @@ class HomeFragment: Fragment() {
         viewModel.user.observe(viewLifecycleOwner) { user ->
             if (user.imagePath?.isNotBlank() == true)
                 Picasso.get().load(user.imagePath).into(binding.userBtn)
-
-            if (user.chats?.isNotEmpty() == true)
-                viewModel.getChatList()
         }
 
-        viewModel.chatList.observe(viewLifecycleOwner) { chatList ->
+        viewModel.userList.observe(viewLifecycleOwner) {
             viewModel.setChatsListAdapter()
         }
     }

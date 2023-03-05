@@ -9,6 +9,7 @@ import com.example.domain.model.Message
 import com.example.messenger.databinding.RowChatMessageBinding
 import com.example.messenger.presentation.viewholder.ChatMessageListViewHolder
 import javax.inject.Inject
+import javax.inject.Named
 
 class ChatMessageListAdapter @Inject constructor(
 ): RecyclerView.Adapter<ChatMessageListViewHolder>() {
@@ -27,11 +28,6 @@ class ChatMessageListAdapter @Inject constructor(
             override fun submitList(newList: MutableList<Message>?) {
                 super.submitList(newList)
                 notifyDataSetChanged()
-            }
-
-            override fun addListListener(listener: ListListener<Message>) {
-                super.addListListener(listener)
-
             }
         }
 

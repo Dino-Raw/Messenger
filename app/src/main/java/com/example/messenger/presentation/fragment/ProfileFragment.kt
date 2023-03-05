@@ -69,7 +69,7 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
                 "ChatFragment" -> {
                     findNavController().navigate(
                         R.id.action_fragment_profile_to_fragment_chat,
-                        bundleOf("user" to viewModel.user.value)
+                        bundleOf("userId" to viewModel.user.value?.id.toString())
                     )
                     viewModel.navigationActionClear()
                 }

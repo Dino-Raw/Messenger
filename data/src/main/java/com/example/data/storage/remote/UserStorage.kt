@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserStorage {
     suspend fun getUser(userId: String): Flow<Response<User>>
     suspend fun getUserList(): Flow<Response<ArrayList<User>>>
+    suspend fun getUserListById(userIdList: ArrayList<String>): Flow<Response<ArrayList<User>>>
 }

@@ -12,8 +12,8 @@ import com.example.messenger.presentation.viewholder.HomeChatsListViewHolder
 import javax.inject.Inject
 
 class HomeChatsListAdapter@Inject constructor(
-
 ): RecyclerView.Adapter<HomeChatsListViewHolder>() {
+    lateinit var currentUserId: String
     private val differCallback =
         object : DiffUtil.ItemCallback<Chat>(){
             override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean =
@@ -34,7 +34,7 @@ class HomeChatsListAdapter@Inject constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeChatsListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = RowChatBinding.inflate(layoutInflater)
-        return  HomeChatsListViewHolder(binding)
+        return  HomeChatsListViewHolder(binding, currentUserId)
     }
 
     override fun getItemCount(): Int = differ.currentList.size

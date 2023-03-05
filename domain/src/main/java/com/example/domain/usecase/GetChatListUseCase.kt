@@ -6,6 +6,6 @@ import com.example.domain.repository.remote.ChatRepository
 import kotlinx.coroutines.flow.*
 
 class GetChatListUseCase(private val repository: ChatRepository) {
-    suspend fun execute(chatIdList: ArrayList<String>): Flow<Response<ArrayList<Chat>>> =
-        repository.getChatList(chatIdList = chatIdList)
+    suspend fun execute(): Flow<Response<ArrayList<Chat>>> =
+        repository.getChatList()
 }

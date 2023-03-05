@@ -9,21 +9,25 @@ import com.example.messenger.R
 import com.example.messenger.databinding.RowChatBinding
 import com.squareup.picasso.Picasso
 
-class HomeChatsListViewHolder(private val binding: RowChatBinding): RecyclerView.ViewHolder(binding.root) {
+class HomeChatsListViewHolder(private val binding: RowChatBinding, private val currentUserId: String)
+    : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(chat: Chat) {
-//        if (chat.toUser?.imagePath?.isNotBlank() == true)
-//            Picasso.get().load(chat.toUser?.imagePath).into(binding.chatImage)
-//
-//        binding.name = chat.toUser?.name
-//        binding.message = chat.recentMessage?.body
-//        binding.executePendingBindings()
-//
-//        itemView.setOnClickListener {
-//            binding.root.findNavController().navigate (
-//                R.id.action_fragment_home_to_fragment_chat,
-//                bundleOf("user" to chat.toUser)
-//            )
-//        }
+        if (chat.imagePath?.isNotBlank() == true)
+            Picasso.get().load(chat.imagePath).into(binding.chatImage)
+
+        binding.name = chat.name
+        binding.message = chat.messageBody
+        binding.executePendingBindings()
+
+        itemView.setOnClickListener {
+            binding.root.findNavController().navigate (
+                R.id.action_fragment_home_to_fragment_chat,
+                bundleOf(
+                    "chatId" to chat.id,
+                    "userId" to chat.members?.filter { it != currentUserId }?.get(0)
+                )
+            )
+        }
     }
 }

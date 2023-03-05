@@ -6,6 +6,7 @@ import com.example.domain.repository.remote.*
 import com.example.domain.usecase.*
 import dagger.Module
 import dagger.Provides
+import org.checkerframework.checker.signature.qual.PrimitiveType
 
 @Module
 class DomainModule {
@@ -54,6 +55,10 @@ class DomainModule {
         GetUserListUseCase(repository = repository)
 
     @Provides
+    fun provideGetUserListByIdUseCase(repository: UserRepository) =
+        GetUserListByIdUseCase(repository = repository)
+
+    @Provides
     fun provideGetUserUseCase(repository: UserRepository) =
         GetUserUseCase(repository = repository)
 
@@ -76,4 +81,12 @@ class DomainModule {
     @Provides
     fun provideGetChatListUseCase(repository: ChatRepository) =
         GetChatListUseCase(repository = repository)
+
+    @Provides
+    fun provideUpdateChatUseCase(repository: ChatRepository) =
+        UpdateChatUseCase(repository = repository)
+
+    @Provides
+    fun provideInsertChatUseCase(repository: ChatRepository) =
+        InsertChatUseCase(repository = repository)
 }

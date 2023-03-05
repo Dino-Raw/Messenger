@@ -51,6 +51,7 @@ class FirebaseMessageStorage @Inject constructor(
 
     override suspend fun insertMessage(chatId: String, message: Message): Flow<Response<Boolean>> = callbackFlow {
         trySend(Response.Loading())
+
         firebaseFirestore.collection("messages").document(chatId)
             .collection("messages").document().also { document ->
                 document.set(

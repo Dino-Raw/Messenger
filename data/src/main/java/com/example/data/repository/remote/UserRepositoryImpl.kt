@@ -16,4 +16,8 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserList(): Flow<Response<ArrayList<User>>> =
         userStorage.getUserList()
+
+    override suspend fun getUserListById(userIdList: ArrayList<String>): Flow<Response<ArrayList<User>>> =
+        userStorage.getUserListById(userIdList = userIdList)
+
 }

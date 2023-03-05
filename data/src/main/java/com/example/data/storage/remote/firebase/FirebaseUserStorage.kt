@@ -62,8 +62,36 @@ class FirebaseUserStorage @Inject constructor(
 
                 if (userList.isNotEmpty())
                     trySend(Response.Success(data = userList))
-                else
-                    trySend(Response.Fail(e = Exception("No such users")))
+            }
+
+        awaitClose {
+            listener.remove()
+            this.cancel()
+        }
+    }
+
+    override suspend fun getUserListById(userIdList: ArrayList<String>): Flow<Response<ArrayList<User>>> = callbackFlow {
+        trySend(Response.Loading())
+
+        val listener = firebaseFirestore.collection("users")
+            //.whereArrayContains("id", userIdList)
+            .whereIn("id", userIdList)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    trySend(Response.Fail(e = Exception(error.message)))
+                    close()
+                }
+
+                val userList = arrayListOf<User>()
+
+                value?.documents?.forEach { snapshot ->
+                    snapshot?.toObject(CurrentUser::class.java)?.also {  currentUser ->
+                        userList.add(currentUser.toUser())
+                    }
+                }
+
+                if (userList.isNotEmpty())
+                    trySend(Response.Success(data = userList))
             }
 
         awaitClose {

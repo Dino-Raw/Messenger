@@ -1,6 +1,7 @@
 package com.example.messenger.di
 
 import com.example.messenger.presentation.activity.MainActivity
+import com.example.messenger.presentation.adapter.ChatMessageListAdapter
 import com.example.messenger.presentation.fragment.*
 import dagger.Component
 import javax.inject.Singleton
