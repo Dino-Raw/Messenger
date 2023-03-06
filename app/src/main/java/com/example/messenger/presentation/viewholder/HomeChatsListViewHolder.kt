@@ -30,7 +30,6 @@ class HomeChatsListViewHolder(
         binding.name = chat.name
         binding.message = chat.messageBody
         binding.time = getTimeDifference(chat.messageTimestamp?.toLong())
-            .format(Date(chat.messageTimestamp?.toLong()!! * 1000))
         binding.executePendingBindings()
 
         itemView.setOnClickListener {
