@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Chat
-import com.example.messenger.presentation.model.HomeChatItem
 import com.example.messenger.databinding.RowChatBinding
 import com.example.messenger.presentation.viewholder.HomeChatsListViewHolder
 import javax.inject.Inject
@@ -33,7 +32,7 @@ class HomeChatsListAdapter@Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeChatsListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = RowChatBinding.inflate(layoutInflater)
+        val binding = RowChatBinding.inflate(layoutInflater, parent, false)
         return  HomeChatsListViewHolder(binding, currentUserId)
     }
 

@@ -15,6 +15,7 @@ import com.example.messenger.presentation.activity.MessengerActivity
 import com.example.messenger.presentation.util.transform
 import com.example.messenger.presentation.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import javax.inject.Inject
 
 
