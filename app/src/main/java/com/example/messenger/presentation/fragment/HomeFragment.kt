@@ -59,9 +59,9 @@ class HomeFragment: Fragment() {
         }
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
-            if (user.imagePath?.isNotBlank() == true)
+            if (user.imagePath?.isNotEmpty() == true)
                 Picasso.get()
-                    .load(user.imagePath)
+                    .load(user.imagePath?.last())
                     .placeholder(R.drawable.ic_account_24)
                     .transform(transform)
                     .into(binding.userBtn)

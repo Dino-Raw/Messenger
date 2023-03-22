@@ -46,8 +46,7 @@ class HomeChatsListViewHolder(
     @SuppressLint("SimpleDateFormat")
     fun getTimeDifference(time: Long?): String {
         if (time == null) return ""
-        val diff = Timestamp.now().seconds - time
-        return when (diff) {
+        return when (val diff = Timestamp.now().seconds - time) {
             in 0..59 -> { "$diff sec" } // количество секунд
             in 60..3599 -> { (diff / 60).toString() + " min" } // количество минут
             in 3600..86399 -> { (diff / 3600).toString() + " hours" } // количество часов

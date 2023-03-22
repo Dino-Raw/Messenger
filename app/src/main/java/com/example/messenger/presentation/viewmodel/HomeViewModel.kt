@@ -70,7 +70,7 @@ class HomeViewModel @Inject constructor(
             userList.value?.forEach { user ->
                 if (chat.members?.contains(user.id) == true) {
                     chat.name = user.name
-                    chat.imagePath = user.imagePath
+                    chat.imagePath = user.imagePath?.last()
                 }
             }
         }

@@ -17,6 +17,7 @@ import com.example.messenger.databinding.FragmentProfileBinding
 import com.example.messenger.di.ViewModelFactory
 import com.example.messenger.presentation.activity.MessengerActivity
 import com.example.messenger.presentation.viewmodel.ProfileViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 import kotlin.math.abs
@@ -47,21 +48,30 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+
+
         observers()
 
-        binding.profileAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (abs(verticalOffset) in 0..565)
-                binding.profileBackBtn.drawable.setTint(resources.getColor(R.color.white))
-            else
-                binding.profileBackBtn.drawable.setTint(resources.getColor(R.color.black))
 
-        }
+
+//        binding.profileAppbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+//            if (abs(verticalOffset) in 0..565)
+//                binding.profileBackBtn.drawable.setTint(resources.getColor(R.color.white))
+//            else
+//                binding.profileBackBtn.drawable.setTint(resources.getColor(R.color.black))
+//
+//        }
     }
 
+
+    // Add viewpager
     private fun observers() {
         viewModel.user.observe(viewLifecycleOwner) { user ->
-            if (user.imagePath?.isNotBlank() == true)
-                Picasso.get().load(user.imagePath).into(binding.userImage)
+            if (user.imagePath?.isNotEmpty() == true) {
+                viewModel.setAdapter()
+                bindViewPagerAndTabLayout()
+            }
         }
 
         viewModel.navigationAction.observe(viewLifecycleOwner) { navigationAction ->
@@ -81,6 +91,14 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
             }
         }
     }
+
+    private fun bindViewPagerAndTabLayout() {
+        TabLayoutMediator(
+            binding.profileImageTabLayout,
+            binding.profileImageViewPager
+        ) { tab, _ -> tab.select() }.attach()
+    }
+
 
     private fun initUser() {
         viewModel.user.value =
