@@ -16,7 +16,6 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val getUserUseCase: GetUserUseCase,
     private val getChatListUseCase: GetChatListUseCase,
     private val getUserListByIdUseCase: GetUserListByIdUseCase,
     val chatsListAdapter: HomeChatsListAdapter,
@@ -26,6 +25,7 @@ class HomeViewModel @Inject constructor(
             if (response is Response.Success) {
                 emit(response.data)
                 chatsListAdapter.currentUserId = response.data.id.toString()
+                println(response.data)
             }
         }
     }
@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
     }
 
     var userList: LiveData<ArrayList<User>> = MediatorLiveData<ArrayList<User>>().apply {
-        addSource(chatList) { chats ->
+        addSource(chatList) {
             viewModelScope.launch(Dispatchers.IO) {
                 getUserListByIdUseCase.execute(userIdList).collect { response ->
                     if (response is Response.Success) postValue(response.data)

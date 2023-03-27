@@ -48,23 +48,14 @@ class HomeFragment: Fragment() {
     }
 
     private fun observers() {
-        viewModel.navigationAction.observe(viewLifecycleOwner) { navigationAction ->
-            when (navigationAction) {
-                "UsersFragment" -> {
-                    findNavController().navigate(R.id.action_fragment_home_to_fragment_users)
-                    viewModel.navigationActionClear()
-                }
-                else -> {}
-            }
-        }
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
-            if (user.imagePath?.isNotEmpty() == true)
-                Picasso.get()
-                    .load(user.imagePath?.last())
-                    .placeholder(R.drawable.ic_account_24)
-                    .transform(transform)
-                    .into(binding.userBtn)
+           // if (user.imagePath?.isNotEmpty() == true)
+//                Picasso.get()
+//                    .load(user.imagePath?.last())
+//                    .placeholder(R.drawable.ic_account_24)
+//                    .transform(transform)
+//                    .into(binding.userBtn)
         }
 
         viewModel.userList.observe(viewLifecycleOwner) {

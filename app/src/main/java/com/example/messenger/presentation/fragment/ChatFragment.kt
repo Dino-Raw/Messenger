@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.messenger.R
 import com.example.messenger.app.App
@@ -19,6 +20,7 @@ import com.example.messenger.presentation.util.transform
 import com.example.messenger.presentation.viewmodel.ChatViewModel
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
+
 
 class ChatFragment: Fragment(R.layout.fragment_chat) {
     @Inject lateinit var viewModelFactory: ViewModelFactory

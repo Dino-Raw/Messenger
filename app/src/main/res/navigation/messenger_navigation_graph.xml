@@ -13,12 +13,6 @@
 		<action
 			android:id="@+id/action_fragment_home_to_fragment_chat"
 			app:destination="@id/fragment_chat" />
-		<action
-			android:id="@+id/action_fragment_home_to_fragment_current_user_profile"
-			app:destination="@id/fragment_current_user_profile" />
-		<action
-			android:id="@+id/action_fragment_home_to_fragment_users"
-			app:destination="@id/fragment_users" />
 	</fragment>
 	<fragment
 		android:id="@+id/fragment_chat"

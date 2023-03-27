@@ -6,15 +6,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Chat
 import com.example.messenger.R
-import com.example.messenger.databinding.RowChatBinding
+import com.example.messenger.databinding.RowHomeChatBinding
 import com.example.messenger.presentation.util.transform
 import com.google.firebase.Timestamp
 import com.squareup.picasso.Picasso
-import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeChatsListViewHolder(
-    private val binding: RowChatBinding,
+    private val binding: RowHomeChatBinding,
     private val currentUserId: String,
 ) : RecyclerView.ViewHolder(binding.root) {
 

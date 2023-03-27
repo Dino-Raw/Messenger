@@ -17,7 +17,7 @@
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingVertical="5dp">
+		android:paddingVertical="7dp">
 
 		<ImageView
 			android:id="@+id/user_image"
@@ -33,12 +33,12 @@
 			android:id="@+id/user_name_text"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="10dp"
+			android:layout_marginStart="15dp"
 			android:hint="Name"
 			android:text="@{name}"
-			android:textSize="15sp"
-			android:textColor="#2d2d2d"
-			android:textColorHint="#2d2d2d"
+			android:textSize="17sp"
+			android:textColor="#28314e"
+			android:textColorHint="#28314e"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintStart_toEndOf="@id/user_image"
 			app:layout_constraintTop_toTopOf="parent">

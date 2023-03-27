@@ -7,7 +7,10 @@ import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.messenger.R
 import com.example.messenger.databinding.ActivityMessengerBinding
 
@@ -21,8 +24,15 @@ class MessengerActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
         window.statusBarColor = Color.TRANSPARENT
 
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = true
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
+    }
+
+    private fun initBottomNavigationVisibility() {
+        findNavController(R.id.messenger_navigation_fragment).addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.fragment_chat, R.id.fragment_profile -> binding.bottomNavigation.visibility = View.GONE
+                else -> binding.bottomNavigation.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -32,6 +42,10 @@ class MessengerActivity : AppCompatActivity() {
         _binding = ActivityMessengerBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         setContentView(binding.root)
+        binding.bottomNavigation.setupWithNavController(
+            findNavController(R.id.messenger_navigation_fragment)
+        )
+        initBottomNavigationVisibility()
     }
 
     override fun onSupportNavigateUp(): Boolean {

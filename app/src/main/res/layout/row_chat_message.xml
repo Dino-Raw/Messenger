@@ -28,15 +28,15 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="150dp"
-			android:paddingVertical="5dp"
-			android:paddingHorizontal="10dp"
-			android:visibility="@{isCurrentUser ? View.GONE : View.VISIBLE}"
-			android:background="@drawable/message_other_user_background">
+			android:visibility="@{isCurrentUser ? View.GONE : View.VISIBLE}">
 			<TextView
 				android:id="@+id/to_user_message_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textColor="#2d2d2d"
+				android:paddingVertical="10dp"
+				android:paddingHorizontal="15dp"
+				android:background="@drawable/message_other_user_background"
+				android:textColor="#373645"
 				android:textSize="15sp"
 				android:hint="Message"
 				android:text="@{message}">
@@ -46,8 +46,10 @@
 				android:id="@+id/to_user_time_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
 				android:layout_below="@id/to_user_message_text"
-				android:layout_alignEnd="@id/to_user_message_text"
+				android:layout_alignStart="@id/to_user_message_text"
+				android:textColor="#a9a6b6"
 				android:textSize="10sp"
 				android:hint="Time"
 				android:text="@{time}">
@@ -60,17 +62,17 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="150dp"
-			android:paddingVertical="5dp"
-			android:paddingHorizontal="10dp"
-			android:visibility="@{isCurrentUser ? View.VISIBLE :  View.GONE}"
-			android:background="@drawable/message_current_user_background">
+			android:visibility="@{isCurrentUser ? View.VISIBLE :  View.GONE}">
 			<TextView
 				android:id="@+id/message_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textColor="#2d2d2d"
+				android:textColor="#edfdff"
 				android:textSize="15sp"
 				android:hint="Message"
+				android:paddingVertical="10dp"
+				android:paddingHorizontal="15dp"
+				android:background="@drawable/message_current_user_background"
 				android:text="@{message}">
 			</TextView>
 
@@ -78,8 +80,10 @@
 				android:id="@+id/time_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
 				android:layout_below="@id/message_text"
 				android:layout_alignEnd="@id/message_text"
+				android:textColor="#a9a6b6"
 				android:textSize="10sp"
 				android:hint="Time"
 				android:text="@{time}">
